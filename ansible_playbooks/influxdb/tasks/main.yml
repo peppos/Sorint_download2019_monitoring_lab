@@ -1,0 +1,6 @@
+---
+# tasks file for influxdb
+
+- name: Create database
+  influxdb_database:
+    database_name: "{{ influx_dbname }}"

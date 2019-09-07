@@ -1,0 +1,8 @@
+---
+# tasks file for alertmanager
+
+  - name: Copy alertmanager.yml
+    command: docker cp {{ alertmanager_file_path }} {{ alertmanager_container_name }}:/opt/alertmanager/alertmanager.yml
+
+  - name: Reload config
+    command: curl -X POST http://localhost:9093/-/reload 

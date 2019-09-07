@@ -1,0 +1,8 @@
+  - name: Copy prometheus.yml
+    command: docker cp {{ prometheus_file_path }} {{ prometheus_container_name }}:/opt/prometheus/prometheus.yml
+
+  - name: Copy alert.rules.yml
+    command: docker cp {{ alert_rules_file_path }} {{ prometheus_container_name }}:/opt/prometheus/alert.rules.yml
+
+  - name: Reload conf
+    command: curl -X POST http://localhost:9090/-/reload

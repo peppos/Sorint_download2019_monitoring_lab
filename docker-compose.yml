@@ -1,0 +1,82 @@
+version: '3'
+services:
+  netdata:
+    build: Docker/netdata/.
+    container_name: netdata
+    hostname: netdata
+    ports:
+      - "19999:19999"
+      - "8080:80"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+  prometheus:
+    build: Docker/prometheus/.
+    container_name: prometheus
+    hostname: prometheus
+    ports:
+      - "9090:9090"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+  influxdb:
+    build: Docker/influxdb/.
+    container_name: influxdb
+    hostname: influxdb
+    volumes:
+      - /opt/influxdb:/var/lib/influxdb
+    ports:
+      - "8086:8086"
+      - "8088:8088"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+  grafana:
+    build: Docker/grafana/.
+    container_name: grafana
+    hostname: grafana
+    ports:
+      - "3000:3000"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+  alertmanager:
+    build: Docker/alertmanager/.
+    container_name: alertmanager
+    hostname: alertmanager
+    ports:
+      - "9093:9093"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+  prometheus_bot:
+    build: Docker/prometheus_bot/.
+    container_name: prometheus_bot
+    hostname: prometheus_bot
+    ports:
+      - "9087:9087"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+networks:
+    default:
+        driver: bridge

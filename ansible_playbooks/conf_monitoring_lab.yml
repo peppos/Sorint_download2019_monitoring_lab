@@ -1,0 +1,44 @@
+---  
+- name: Configure Prometheus
+  hosts: localhost
+  gather_facts: False
+  become: yes
+  vars_files:
+    - inventories/group_vars/all/all_vars.yml
+  roles:
+    - prometheus
+  tags:
+    - prometheus
+
+- name: Configure Alertmanager
+  hosts: localhost
+  gather_facts: False
+  become: yes
+  vars_files:
+    - inventories/group_vars/all/all_vars.yml
+  roles:
+    - alertmanager
+  tags:
+    - alertmanager
+
+- name: Configure influx
+  hosts: localhost
+  gather_facts: False
+  become: yes
+  vars_files:
+    - inventories/group_vars/all/all_vars.yml
+  roles:
+    - influxdb
+  tags:
+    - influxdb
+
+- name: Configure Grafana
+  hosts: localhost
+  gather_facts: False
+  become: yes
+  vars_files:
+    - inventories/group_vars/all/all_vars.yml
+  roles:
+    - grafana
+  tags:
+    - grafana

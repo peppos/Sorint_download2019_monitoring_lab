@@ -1,0 +1,23 @@
+prometheus_container_name: prometheus
+alertmanager_container_name: alertmanager
+
+conf_file_prefix: "/home/peppo/Sorint_download2019_monitoring_lab/Config_files_custom"
+alertmanager_file_path: "{{ conf_file_prefix }}/alertmanager.yml"
+
+prometheus_file_path: "{{ conf_file_prefix }}/prometheus.yml"
+target_file_path: "{{ conf_file_prefix }}/target.json"
+alert_rules_file_path: "{{ conf_file_prefix }}/alert.rules.yml"
+
+
+
+prometheus_name: "Prometheus"
+grafana_url: "http://localhost:3000"
+org_id: "1"
+grafana_api_key: "eyJrIjoiQ1cyS1FtY2Z3ZUtDNlVXUml5OG5RT1FkQXp4MzAyRWwiLCJuIjoiYW5zaWJsZSIsImlkIjoxfQ=="
+prometheus_url: "http://prometheus:9090"
+
+influx_name: "InfluxDB"
+influx_url: "http://influxdb:8086"
+influx_dbname: "prometheus"
+
+

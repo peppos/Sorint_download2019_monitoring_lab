@@ -1,0 +1,24 @@
+---
+# tasks file for grafana
+#
+- name: Create prometheus datasource
+  grafana_datasource:
+    name: "{{ prometheus_name }}"
+    grafana_url: "{{ grafana_url }}"
+    grafana_api_key: "{{ grafana_api_key }}"
+    ds_type: "prometheus"
+    url: "{{ prometheus_url }}"
+    is_default: true
+    validate_certs: no
+    state: present
+
+- name: Create influx datasource
+  grafana_datasource:
+    name: "{{ influx_name }}"
+    grafana_url: "{{ grafana_url }}"
+    grafana_api_key: "{{ grafana_api_key }}"
+    ds_type: "influxdb"
+    url: "{{ influx_url }}"
+    validate_certs: no
+    database: "{{ influx_dbname }}"
+    state: present

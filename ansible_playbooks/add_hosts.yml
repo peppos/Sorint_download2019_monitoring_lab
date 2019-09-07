@@ -1,0 +1,17 @@
+---  
+- name: Add hosts to Prometheus
+  hosts: localhost
+  become: yes
+  vars_files:
+    - inventories/group_vars/all/all_vars.yml
+  tasks:
+
+  - name: Copy target.json
+    command: docker cp {{ target_file_path }} {{ prometheus_container_name }}:/opt/prometheus/target.json
+    tags:
+      - add_hosts
+
+  - name: Reload conf
+    command: curl -X POST http://localhost:9090/-/reload
+
+

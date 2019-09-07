@@ -1,0 +1,65 @@
+groups:
+  - name: alerting_rules
+    rules:
+      - alert: LoadAverage1m
+        expr: netdata_system_load_load_average{dimension="load1"} >= 3.75
+        labels:
+          severity: warning
+        annotations:
+          summary: "Instance {{ $labels.instance }} - high load average"
+          description: "{{ $labels.instance  }} (measured by {{ $labels.job }}) has high load average ({{ $value }}) over 1 minute."
+
+      - alert: Instance Down
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Endpoint {{ $labels.instance }} down"
+          description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minutes."
+
+      - alert: Container Down
+        expr: netdata_docker_engine_engine_daemon_container_states_containers_count_average{dimension="stopped"} > 0
+        for: 20s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Container {{ $labels.instance }} down"
+          description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 20 seconds."
+
+      - alert: Disk Free on root partition
+        expr: 100 / sum(netdata_disk_space_GiB_average{family="/"}) by (job) * sum(netdata_disk_space_GiB_average{family="/",dimension=~"avail|cached"}) by (job) < 10
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Endpoint {{ $labels.job }} low disk free"
+          description: "The {{ $labels.job }} has low disk free {{ $value }} over 1 minute."
+
+      - alert: Memory usage more_31
+        expr: 100 / sum(netdata_system_ram_MiB_average) by (job) * sum(netdata_system_ram_MiB_average{dimension=~"free|cached"}) by (job) < 70
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Memory alert for node {{ $labels.job }}"
+          description: "{{ $labels.job }} memory usage is {{ humanize $value}}%."
+
+      - alert: Apache requests
+        expr: netdata_apache_requests_requests_persec_average > 70
+        for: 10s
+        labels:
+          severity: warning
+        annotations:
+          summary: "Apache request alart for node {{ $labels.job }}"
+          description: "{{ $labels.job }} has many http request {{ humanize $value}}%."
+
+      - alert: Apache requests block
+        expr: netdata_apache_requests_requests_persec_average > 150
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Apache request alart for node {{ $labels.job }}"
+          description: "{{ $labels.job }} has many http request {{ humanize $value}}%."
+
